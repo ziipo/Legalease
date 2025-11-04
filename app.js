@@ -1,5 +1,5 @@
-// API endpoint - will be updated with your Vercel deployment URL
-const API_ENDPOINT = '/api/analyze-document';
+// API endpoint - Vercel deployment URL
+const API_ENDPOINT = 'https://legalease-563dozr8v-kans-projects-d62f37a9.vercel.app/api/analyze-document';
 
 // DOM elements
 const uploadForm = document.getElementById('uploadForm');

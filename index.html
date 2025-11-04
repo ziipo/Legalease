@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legalease - AI Legal Document Reviewer</title>
+    <meta name="description" content="Upload legal documents for AI-powered review. Get insights on legalese, missing definitions, and problematic clauses.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚖️ Legalease</h1>
+            <p>AI-powered legal document review</p>
+        </header>
+
+        <main>
+            <div id="inputSection" class="input-section">
+                <form id="uploadForm">
+                    <div class="form-group">
+                        <label for="fileInput">Upload Document</label>
+                        <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt" required>
+                        <span class="file-info">Supported formats: PDF, DOC, DOCX, TXT</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="focusArea">Focus Area (Optional)</label>
+                        <select id="focusArea">
+                            <option value="">General Review</option>
+                            <option value="legalese">Unnecessary Legalese</option>
+                            <option value="definitions">Missing Definitions</option>
+                            <option value="clauses">Problematic Clauses</option>
+                            <option value="clarity">Clarity & Plain Language</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" id="analyzeBtn" class="btn-primary">
+                        Analyze Document
+                    </button>
+                </form>
+            </div>
+
+            <div id="loadingSection" class="loading-section hidden">
+                <div class="spinner"></div>
+                <p>Analyzing your document...</p>
+            </div>
+
+            <div id="resultSection" class="result-section hidden">
+                <h2>Legal Review</h2>
+                <div id="reviewResult" class="review-result"></div>
+
+                <div class="action-buttons">
+                    <button id="copyBtn" class="btn-secondary">Copy Review</button>
+                    <button id="newDocBtn" class="btn-primary">Analyze Another Document</button>
+                </div>
+            </div>
+
+            <div id="errorSection" class="error-section hidden">
+                <p id="errorMessage"></p>
+                <button id="retryBtn" class="btn-secondary">Try Again</button>
+            </div>
+        </main>
+
+        <footer>
+            <p>Powered by AI | For informational purposes only - not legal advice</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

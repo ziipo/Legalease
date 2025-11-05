@@ -25,13 +25,14 @@ async function parseForm(req) {
 async function extractText(file) {
   const filePath = file.filepath;
   const fileType = file.mimetype;
+  const fileName = file.originalFilename || '';
 
   try {
     if (fileType === 'application/pdf') {
       const dataBuffer = fs.readFileSync(filePath);
       const data = await pdfParse(dataBuffer);
       return data.text;
-    } else if (fileType === 'text/plain' || filePath.endsWith('.txt')) {
+    } else if (fileType === 'text/plain' || fileName.endsWith('.txt')) {
       return fs.readFileSync(filePath, 'utf-8');
     } else if (
       fileType === 'application/msword' ||
@@ -43,7 +44,7 @@ async function extractText(file) {
     }
   } finally {
     // Clean up uploaded file
-    if (fs.existsSync(filePath)) {
+    if (filePath && fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);
     }
   }
@@ -173,7 +174,10 @@ module.exports = async function handler(req, res) {
 
     // Parse form data
     const { fields, files } = await parseForm(req);
-    const file = files.file;
+
+    // Formidable v3 returns files as arrays
+    const fileArray = files.file;
+    const file = Array.isArray(fileArray) ? fileArray[0] : fileArray;
     const focusArea = fields.focusArea?.[0] || '';
 
     if (!file) {

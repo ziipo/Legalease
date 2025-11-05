@@ -33,12 +33,13 @@ header {
 }
 
 header .logo {
-    width: 120px;
+    width: 150px;
     height: auto;
     margin-bottom: 20px;
     display: block;
     margin-left: auto;
     margin-right: auto;
+    object-fit: contain;
 }
 
 header h1 {

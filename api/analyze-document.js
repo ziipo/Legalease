@@ -1,17 +1,10 @@
-import { parse } from 'pdf-parse';
-import formidable from 'formidable';
-import fs from 'fs';
+const formidable = require('formidable');
+const fs = require('fs');
+const pdfParse = require('pdf-parse');
 
 // This will use OpenAI, Anthropic, or another LLM provider
-// You'll need to add your API key in Vercel environment variables
 const LLM_API_KEY = process.env.LLM_API_KEY;
-const LLM_PROVIDER = process.env.LLM_PROVIDER || 'openai'; // openai, anthropic, etc.
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+const LLM_PROVIDER = process.env.LLM_PROVIDER || 'openai';
 
 // Parse multipart form data
 async function parseForm(req) {
@@ -36,7 +29,7 @@ async function extractText(file) {
   try {
     if (fileType === 'application/pdf') {
       const dataBuffer = fs.readFileSync(filePath);
-      const data = await parse(dataBuffer);
+      const data = await pdfParse(dataBuffer);
       return data.text;
     } else if (fileType === 'text/plain' || filePath.endsWith('.txt')) {
       return fs.readFileSync(filePath, 'utf-8');
@@ -44,8 +37,6 @@ async function extractText(file) {
       fileType === 'application/msword' ||
       fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     ) {
-      // For DOC/DOCX files, you'd need a library like mammoth
-      // For now, return an error message
       throw new Error('DOC/DOCX support coming soon. Please use PDF or TXT files.');
     } else {
       throw new Error('Unsupported file type');
@@ -158,8 +149,8 @@ async function callAnthropic(prompt) {
   return data.content[0].text;
 }
 
-export default async function handler(req, res) {
-  // Enable CORS
+module.exports = async function handler(req, res) {
+  // Enable CORS - must be set first
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -218,4 +209,4 @@ export default async function handler(req, res) {
       error: error.message || 'An error occurred while analyzing the document'
     });
   }
-}
+};

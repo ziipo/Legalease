@@ -1,4 +1,4 @@
-const formidable = require('formidable');
+const { IncomingForm } = require('formidable');
 const fs = require('fs');
 const pdfParse = require('pdf-parse');
 
@@ -9,7 +9,7 @@ const LLM_PROVIDER = process.env.LLM_PROVIDER || 'openai';
 // Parse multipart form data
 async function parseForm(req) {
   return new Promise((resolve, reject) => {
-    const form = formidable({
+    const form = new IncomingForm({
       maxFileSize: 10 * 1024 * 1024, // 10MB
       keepExtensions: true
     });
